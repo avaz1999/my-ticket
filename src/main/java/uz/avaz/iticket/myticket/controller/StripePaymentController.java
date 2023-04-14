@@ -28,7 +28,7 @@ public class StripePaymentController {
     @Value("${BASE_URL}")
     String baseUrl;
 
-    String endpointSecret="whsec_e4aa9b52a2ac96400f3825ae99dbd3b73e0f730d565ed9960dd00ee23518f3c5";
+//     String endpointSecret="whsec_e4aa9b52a2ac96400f3825ae99dbd3b73e0f730d565ed9960dd00ee23518f3c5";
 
     @RequestMapping(value = "payment/success", method = RequestMethod.GET)
     public ResponseEntity<?> paymentSuccess(){
