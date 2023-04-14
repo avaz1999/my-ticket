@@ -35,7 +35,7 @@ public class DistributorService {
         try {
             Attachment attachment = attachmentRepo.save(new Attachment(multipartFile.getOriginalFilename(),
                     multipartFile.getContentType(), multipartFile.getSize()));
-            AttachmentContent attachmentContent = attachmentContentRepo.save(new AttachmentContent(multipartFile.getBytes(), attachment));
+                    attachmentContentRepo.save(new AttachmentContent(multipartFile.getBytes(), attachment));
             return distributorRepo.save(new Distributor(distributorDto.getName(), distributorDto.getDescription(), attachment));
         } catch (IOException e) {
             e.printStackTrace();

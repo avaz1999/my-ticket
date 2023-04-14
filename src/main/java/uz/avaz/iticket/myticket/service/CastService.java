@@ -35,13 +35,13 @@ public class CastService {
 
     public Cast getCastById(UUID id) {
         Optional<Cast> byId = castRepository.findById(id);
-        return byId.get();
+        return byId.orElseGet(byId::get);
     }
 
     public Cast addCast(MultipartFile file, CastDto castDto) {
         try {
             Attachment attachment = attachmentRepo.save(new Attachment(file.getOriginalFilename(), file.getContentType(), file.getSize()));
-            AttachmentContent save = attachmentContentRepo.save(new AttachmentContent(file.getBytes(), attachment));
+            attachmentContentRepo.save(new AttachmentContent(file.getBytes(), attachment));
            return castRepository.save(new Cast(castDto.getFullName(),attachment, CastType.getCastDisplayType(castDto.getCastType())));
         } catch (Exception e){
             return null;
@@ -59,10 +59,12 @@ public class CastService {
     public Cast edit(UUID id, CastDto castDto) {
         try {
         Optional<Cast> byId = castRepository.findById(id);
-        Cast cast=byId.get();
-        cast.setFullName(castDto.getFullName());
-        cast.setCastType(CastType.getCastDisplayType(castDto.getCastType()));
-         return castRepository.save(cast);
+            if (byId.isPresent()) {
+                Cast cast=byId.get();
+                cast.setFullName(castDto.getFullName());
+                cast.setCastType(CastType.getCastDisplayType(castDto.getCastType()));
+                return castRepository.save(cast);
+            }
         }catch (Exception e){
             e.printStackTrace();
             return null;

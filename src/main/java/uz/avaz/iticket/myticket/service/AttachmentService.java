@@ -30,7 +30,7 @@ public class AttachmentService {
         return attachmentRepo.findAll();
     }
 
-    public ResponseEntity getAttachmentContentById(UUID id) {
+    public ResponseEntity<?> getAttachmentContentById(UUID id) {
         Attachment attachmentById = attachmentRepo.findAttachmentById(id);
         AttachmentContentDataProjection attachmentContent = attachmentContentRepo.findAttachmentContentDataByAttachment(attachmentById);
 
@@ -44,7 +44,7 @@ public class AttachmentService {
     public Attachment saveAttachment(MultipartFile multipartFile) {
         try {
             Attachment attachment = attachmentRepo.save(new Attachment(multipartFile.getOriginalFilename(), multipartFile.getContentType(), multipartFile.getSize()));
-            AttachmentContent attachmentContent = attachmentContentRepo.save(new AttachmentContent(multipartFile.getBytes(), attachment));
+            attachmentContentRepo.save(new AttachmentContent(multipartFile.getBytes(), attachment));
             return attachment;
         } catch (IOException e) {
             e.printStackTrace();
